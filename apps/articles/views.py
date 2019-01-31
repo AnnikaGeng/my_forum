@@ -29,3 +29,28 @@ article_list = ArticleView.as_view({'get': 'list'})
 article_detail = ArticleView.as_view({'get': 'retrieve'})
 
 
+class FeaturedArticleView(GenericViewSet,
+                  mixins.ListModelMixin):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = ArticleSerializer
+    filter_fields = ('category',)
+
+    def get_queryset(self):
+        return Article.objects.filter(featured_article=True)
+
+
+featured_article_list = FeaturedArticleView.as_view({'get': 'list'})
+
+
+class LatestArticleView(GenericViewSet,
+                  mixins.ListModelMixin):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = ArticleSerializer
+    filter_fields = ('category',)
+
+    def get_queryset(self):
+        return Article.objects.all()[:6]
+
+
+latest_article_list = LatestArticleView.as_view({'get': 'list'})
+

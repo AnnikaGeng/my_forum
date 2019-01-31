@@ -31,7 +31,12 @@ ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.UserProfile'
 
+CORS_ORIGIN_ALLOW_ALL=True
 
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8000',
+    '127.0.0.1:8000'
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,10 +50,13 @@ INSTALLED_APPS = [
     'django_filters',
     'apps.users.apps.UsersConfig',
     'apps.articles.apps.ArticlesConfig',
-    'ckeditor'
+    'ckeditor',
+    'corsheaders',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -162,5 +170,9 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": []
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }

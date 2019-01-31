@@ -34,6 +34,7 @@ class Article(core.models.BaseModel):
     fav_nums = models.IntegerField(default=0, verbose_name="喜爱数")
     category = models.IntegerField(choices=CATEGORY_TYPE, default=None, verbose_name="分类")
     tag = models.CharField(max_length=100, verbose_name="标签")
+    featured_article = models.BooleanField(default=False, verbose_name="特色文章")
 
     def __str__(self):
         return self.title
