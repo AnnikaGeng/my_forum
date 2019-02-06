@@ -16,11 +16,16 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.authtoken import views
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^articles/', include('articles.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace="rest_framework")),
-    url(r'^api-token-auth/', views.obtain_auth_token)
+    # drf自带认证接口
+    url(r'^api-token-auth/', views.obtain_auth_token),
+    # jwt认证接口
+    url(r'^login/', obtain_jwt_token),
+    url(r'^search/', include('haystack.urls')),
 ]

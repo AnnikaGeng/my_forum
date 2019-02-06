@@ -20,3 +20,6 @@ class UserLike(core.models.BaseModel):
 
     def __str__(self):
         return self.user.username
+
+
+

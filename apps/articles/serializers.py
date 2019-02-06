@@ -4,6 +4,8 @@ __date__ = '2019-01-29 19:45'
 
 from django.utils import timezone
 from rest_framework import serializers
+import re
+from bs4 import BeautifulSoup
 
 from .models import *
 
@@ -15,7 +17,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('pk', 'title', 'author', 'read_nums', 'fav_nums', 'category',
-                  'tag', 'create_time', 'category_display')
+                  'tag', 'create_time', 'category_display', 'content', 'short_desc')
 
     def get_create_time(self, obj):
         time = str(obj.create_time).split('.')[0]

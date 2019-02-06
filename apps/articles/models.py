@@ -30,6 +30,7 @@ class Article(core.models.BaseModel):
     title = models.CharField(max_length=100, verbose_name="文章标题")
     author = models.CharField(max_length=50, verbose_name="作者")
     content = RichTextField(verbose_name="内容")
+    short_desc = models.TextField(max_length=250, verbose_name="简介", default=None)
     read_nums = models.IntegerField(default=0, verbose_name="阅读数")
     fav_nums = models.IntegerField(default=0, verbose_name="喜爱数")
     category = models.IntegerField(choices=CATEGORY_TYPE, default=None, verbose_name="分类")
