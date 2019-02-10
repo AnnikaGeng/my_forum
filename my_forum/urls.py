@@ -28,4 +28,5 @@ urlpatterns = [
     # jwt认证接口
     url(r'^login/', obtain_jwt_token),
     url(r'^search/', include('haystack.urls')),
+    url(r'^user_operation/', include('user_operation.urls')),
 ]

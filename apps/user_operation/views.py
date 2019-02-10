@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
@@ -10,24 +10,27 @@ from utils.permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 
-class UserFavViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin,
-                     mixins.RetrieveModelMixin):
-    """
-    list:
-        获取用户点赞列表
-    retrieve:
-        判断某文章是否已经点赞
-    create:
-        点赞
-    """
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+class CommentViewset(GenericViewSet,
+                     mixins.ListModelMixin,
+                     mixins.CreateModelMixin):
+    permission_classes = (IsOwnerOrReadOnly,)
+    serializer_class = CommentSerializer
 
     def get_queryset(self):
-        return UserLike.objects.filter(user=self.request.user)
+        return Comment.objects.all()
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return UserLikeSerializer
-        elif self.action == "create":
-            return UserLikeSerializer
-        return UserLikeSerializer
+
+all_comments = CommentViewset.as_view({'get': 'list'})
+create_comment = CommentViewset.as_view({'post': 'create'})
+
+
+class LatestCommentViewset(GenericViewSet,
+                     mixins.ListModelMixin):
+    permission_classes = (IsOwnerOrReadOnly,)
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        return Comment.objects.all()[:5]
+
+
+latest_comments = LatestCommentViewset.as_view({'get': 'list'})
